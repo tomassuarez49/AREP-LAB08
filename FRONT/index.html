@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Twitter</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
+        input, button { margin: 5px; padding: 10px; }
+        #posts { margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <h1>Mini Twitter</h1>
+
+    <h2>Crear Usuario</h2>
+    <input type="text" id="username" placeholder="Nombre de usuario">
+    <button onclick="crearUsuario()">Registrar</button>
+    
+    <h2>Publicar un Post</h2>
+    <input type="number" id="userId" placeholder="ID del usuario">
+    <input type="text" id="content" placeholder="Escribe tu post (máx. 140 caracteres)">
+    <button onclick="crearPost()">Publicar</button>
+
+    <h2>Stream de Posts</h2>
+    <button onclick="cargarPosts()">Actualizar Posts</button>
+    <div id="posts"></div>
+
+    <script>
+        const API_URL = "http://localhost:8080"; 
+
+        async function crearUsuario() {
+            const username = document.getElementById("username").value;
+            if (!username) return alert("Ingresa un nombre de usuario");
+            
+            const response = await fetch(`${API_URL}/users?username=${encodeURIComponent(username)}`, {
+                method: "POST"
+            });
+
+            if (response.ok) {
+                const user = await response.json();
+                alert(`Usuario creado: ID ${user.id}, Nombre ${user.username}`);
+            } else {
+                alert("Error al crear usuario");
+            }
+        }
+
+        async function crearPost() {
+            const userId = document.getElementById("userId").value;
+            const content = document.getElementById("content").value;
+
+            if (!userId || !content) return alert("Completa ambos campos");
+
+            const response = await fetch(`${API_URL}/posts?userId=${userId}&content=${encodeURIComponent(content)}`, {
+                method: "POST"
+            });
+
+            if (response.ok) {
+                alert("Post publicado correctamente");
+                cargarPosts(); // Actualizar la lista de posts
+            } else {
+                alert("Error al publicar el post");
+            }
+        }
+
+        async function cargarPosts() {
+            const response = await fetch(`${API_URL}/posts`);
+            if (response.ok) {
+                const posts = await response.json();
+                document.getElementById("posts").innerHTML = posts.map(p =>
+                    `<p><b>${p.user.username}:</b> ${p.content}</p>`
+                ).join("");
+            } else {
+                alert("Error al cargar los posts");
+            }
+        }
+    </script>
+
+</body>
+</html>
