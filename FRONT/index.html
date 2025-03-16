@@ -5,35 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mini Twitter</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
-        input, button { margin: 5px; padding: 10px; }
-        #posts { margin-top: 20px; }
+        /* Estilos generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Contenedor principal con Grid */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+            gap: 20px;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        /* Secciones individuales */
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            background: #1DA1F2;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #0d8aec;
+        }
+
+        /* Estilo de los posts */
+        .post-container {
+            background: #f8f9fa;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .username {
+            font-weight: bold;
+            color: #1DA1F2;
+        }
+
+        /* Responsivo: en pantallas pequeñas (móviles), se apila en una columna */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr; /* Solo una columna */
+            }
+        }
     </style>
 </head>
 <body>
 
-    <h1>Mini Twitter</h1>
+    <div class="container">
+        <!-- Sección para registrar usuario -->
+        <div class="section">
+            <h2> Crear Usuario</h2>
+            <input type="text" id="username" placeholder="Nombre de usuario">
+            <button onclick="crearUsuario()">Registrar</button>
+        </div>
 
-    <h2>Crear Usuario</h2>
-    <input type="text" id="username" placeholder="Nombre de usuario">
-    <button onclick="crearUsuario()">Registrar</button>
-    
-    <h2>Publicar un Post</h2>
-    <input type="number" id="userId" placeholder="ID del usuario">
-    <input type="text" id="content" placeholder="Escribe tu post (máx. 140 caracteres)">
-    <button onclick="crearPost()">Publicar</button>
+        <!-- Sección para publicar un post -->
+        <div class="section">
+            <h2> Publicar un Post</h2>
+            <input type="number" id="userId" placeholder="ID del usuario">
+            <input type="text" id="content" placeholder="Escribe tu post (máx. 140 caracteres)">
+            <button onclick="crearPost()">Publicar</button>
+        </div>
 
-    <h2>Stream de Posts</h2>
-    <button onclick="cargarPosts()">Actualizar Posts</button>
-    <div id="posts"></div>
+        <!-- Sección para ver el stream de posts -->
+        <div class="section">
+            <h2> Posts</h2>
+            <div id="posts"></div>
+        </div>
+    </div>
 
     <script>
-        const API_URL = "http://localhost:8080"; 
+        const API_URL = "http://localhost:8080"; // Cambia por la URL real de la API
 
         async function crearUsuario() {
             const username = document.getElementById("username").value;
             if (!username) return alert("Ingresa un nombre de usuario");
-            
+
             const response = await fetch(`${API_URL}/users?username=${encodeURIComponent(username)}`, {
                 method: "POST"
             });
@@ -58,7 +145,7 @@
 
             if (response.ok) {
                 alert("Post publicado correctamente");
-                cargarPosts(); // Actualizar la lista de posts
+                cargarPosts(); // Refresca la lista de posts después de publicar
             } else {
                 alert("Error al publicar el post");
             }
@@ -69,12 +156,21 @@
             if (response.ok) {
                 const posts = await response.json();
                 document.getElementById("posts").innerHTML = posts.map(p =>
-                    `<p><b>${p.user.username}:</b> ${p.content}</p>`
+                    `<div class="post-container">
+                        <p class="username">@${p.user.username}</p>
+                        <p>${p.content}</p>
+                    </div>`
                 ).join("");
             } else {
-                alert("Error al cargar los posts");
+                console.error("Error al cargar los posts");
             }
         }
+
+        // Cargar los posts al abrir la página
+        document.addEventListener("DOMContentLoaded", () => {
+            cargarPosts();
+            setInterval(cargarPosts, 5000); // Actualiza cada 5 segundos
+        });
     </script>
 
 </body>
