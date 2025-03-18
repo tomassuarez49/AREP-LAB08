@@ -22,4 +22,6 @@ public class Post {
     public String getContent() {
         return content;
     }
+
+    //cambio
 }
