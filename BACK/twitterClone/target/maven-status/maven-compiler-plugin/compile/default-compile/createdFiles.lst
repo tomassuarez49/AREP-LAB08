@@ -1,6 +1,12 @@
 com\example\twitterclone\CorsConfig$1.class
+com\example\twitterclone\LambdaHandler.class
+com\example\twitterclone\User\ModelUser.class
 com\example\twitterclone\CorsConfig.class
-com\example\twitterclone\Post.class
-com\example\twitterclone\TwitterCloneController.class
-com\example\twitterclone\User.class
-com\example\twitterclone\TwitterClone.class
+com\example\twitterclone\User\MicroUserService.class
+com\example\twitterclone\Stream\MicroStreamService.class
+com\example\twitterclone\Post\PostController.class
+com\example\twitterclone\Stream\StreamController.class
+com\example\twitterclone\User\UserController.class
+com\example\twitterclone\Post\ModelPost.class
+com\example\twitterclone\Post\MicroPostService.class
+com\example\twitterclone\TwitterCloneApplication.class
