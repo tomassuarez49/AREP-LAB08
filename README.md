@@ -1,7 +1,10 @@
 # Escuela Colombiana de Ingeniería
 # Arquitecturas Empresariales
 
-### Integra
+### Integrantes
+* Tomas Suarez Piratova
+* Ricardo Andrés Villamizar
+* Andrés Felipe Rodríguez
 
 ## Taller 7 Microservicios
 
