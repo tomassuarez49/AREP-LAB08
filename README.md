@@ -50,13 +50,6 @@ Despliegue y Servicios en la Nube ☁️
 * AWS Cognito → Servicio de autenticación y gestión de usuarios.
 
 ---
-
-## Disposición del directorio de archivos 🗂️
-
-El momento de ser un monolito
-```
-```
-
 ---
 
 ### Arquitectura Inicial💻
