@@ -14,8 +14,8 @@ desplegando cada componente en AWS Lambda. Además, se implementará autenticaci
 
 * [Maven](https://maven.apache.org/): Es una herramienta de comprensión y gestión de proyectos de software. Basado en el concepto de modelo de objetos de proyecto (POM), Maven puede gestionar la construcción, los informes y la documentación de un proyecto desde una pieza de información central.
 * [Git](https://learn.microsoft.com/es-es/devops/develop/git/what-is-git): Es un sistema de control de versiones distribuido, lo que significa que un clon local del proyecto es un repositorio de control de versiones completo. Estos repositorios locales plenamente funcionales permiten trabajar sin conexión o de forma remota con facilidad.
-* [Java JSK 17+](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) Entorno de desarrollo necesario para ejecutar aplicaciones en Spring Boot.
-* [Spring boot](https://spring.io/projects/spring-boot)Framework para la creación de aplicaciones backend en Java.Simplifica la configuración y despliegue de servicios web y APIs REST.
+* [Java JSK 17+](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) :Entorno de desarrollo necesario para ejecutar aplicaciones en Spring Boot.
+* [Spring boot](https://spring.io/projects/spring-boot): Framework para la creación de aplicaciones backend en Java.Simplifica la configuración y despliegue de servicios web y APIs REST.
 
 
 ---
