@@ -19,4 +19,8 @@ public class MicroUserService {
         return users.values();
     }
 
+    public ModelUser getUserById(Long id) {
+        return users.get(id);
+    }
+
 }

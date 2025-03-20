@@ -1,44 +1,72 @@
 package com.example.twitterclone;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
+import java.io.*;
 import java.util.Map;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
+import com.example.twitterclone.Post.MicroPostService;
+import com.example.twitterclone.Post.ModelPost;
+import com.example.twitterclone.Stream.MicroStreamService;
+import com.example.twitterclone.User.MicroUserService;
+import com.example.twitterclone.User.ModelUser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class LambdaHandler implements RequestHandler<Map<String, Object>, Map<String, Object>> {
+public class LambdaHandler implements RequestStreamHandler {
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final MicroUserService userService = new MicroUserService();
+    private final MicroPostService postService = new MicroPostService(userService);
+    private final MicroStreamService streamService = new MicroStreamService();
+
     @Override
-    public Map<String, Object> handleRequest(Map<String, Object> event, Context context) {
-        //  Verificar estructura del evento
-        context.getLogger().log("Evento recibido: " + event);
+    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        PrintWriter writer = new PrintWriter(outputStream);
 
-        //  Extraer datos del body
-        Map<String, String> body = parseBody(event.get("body"));
+        JsonNode event = objectMapper.readTree(reader);
+        String path = event.has("path") ? event.get("path").asText() : "";
+        String httpMethod = event.has("httpMethod") ? event.get("httpMethod").asText() : "";
+        JsonNode bodyNode = event.has("body") ? event.get("body") : null;
 
-        String username = body.get("username");
-
-        if (username == null || username.isEmpty()) {
-            return createResponse(400, "Falta el campo 'username'");
+        if (bodyNode != null && bodyNode.isTextual()) {
+            bodyNode = objectMapper.readTree(bodyNode.asText());
         }
 
-        //  Simulando creación de usuario
-        String message = "Usuario '" + username + "' creado exitosamente";
+        String responseBody = "";
+        int statusCode = 200;
 
-        return createResponse(200, message);
-    }
-
-    private Map<String, String> parseBody(Object bodyObj) {
-        if (bodyObj instanceof String) {
-            String body = (String) bodyObj;
-            return Map.of("username", body.replaceAll("\\{\"username\":\"(.*?)\"\\}", "$1"));
+        try {
+            if ("/users".equals(path) && "POST".equals(httpMethod)) {
+                if (bodyNode == null || !bodyNode.has("username")) {
+                    throw new IllegalArgumentException("Falta el campo 'username' en el body");
+                }
+                String username = bodyNode.get("username").asText();
+                ModelUser newUser = userService.createUser(username);
+                responseBody = objectMapper.writeValueAsString(newUser);
+            } 
+            else if ("/posts".equals(path) && "POST".equals(httpMethod)) {
+                if (bodyNode == null || !bodyNode.has("userId") || !bodyNode.has("content")) {
+                    throw new IllegalArgumentException("Faltan los campos 'userId' o 'content' en el body");
+                }
+                Long userId = bodyNode.get("userId").asLong();
+                String content = bodyNode.get("content").asText();
+                ModelPost newPost = postService.createPost(userId, content);
+                responseBody = objectMapper.writeValueAsString(newPost);
+            } 
+            else if ("/users".equals(path) && "GET".equals(httpMethod)) {
+                responseBody = objectMapper.writeValueAsString(userService.getUsers());
+            } 
+            else {
+                statusCode = 400;
+                responseBody = "Ruta o método no soportado";
+            }
+        } catch (Exception e) {
+            statusCode = 500;
+            responseBody = "Error interno: " + e.getMessage();
         }
-        return Map.of();
-    }
 
-    private Map<String, Object> createResponse(int statusCode, String message) {
-        return Map.of(
-            "statusCode", statusCode,
-            "headers", Map.of("Content-Type", "application/json"),
-            "body", "{ \"message\": \"" + message + "\" }"
-        );
+        writer.write(objectMapper.writeValueAsString(Map.of("statusCode", statusCode, "body", responseBody)));
+        writer.flush();
     }
 }
-
