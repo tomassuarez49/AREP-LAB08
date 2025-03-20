@@ -115,6 +115,19 @@ cd Lab6_Arep
 
 ## Evidencias
 
+1) Despligue y correcto funcionamiento del monolito
+
+
+https://github.com/user-attachments/assets/faf59d5e-6e5d-4681-a9d7-d36b0b01812a
+
+
+2) Implementación de la capa de seguridad con AWS cognito
+
+   
+
+https://github.com/user-attachments/assets/3b9a6070-0ea8-4636-a451-ee24ea7b5519
+
+
 
 ### Construido con
 
