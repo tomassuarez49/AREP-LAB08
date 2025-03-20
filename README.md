@@ -117,15 +117,44 @@ cd Lab6_Arep
 
 1) Despligue y correcto funcionamiento del monolito
 
-
-https://github.com/user-attachments/assets/faf59d5e-6e5d-4681-a9d7-d36b0b01812a
+https://github.com/user-attachments/assets/3b9a6070-0ea8-4636-a451-ee24ea7b5519
 
 
 2) Implementación de la capa de seguridad con AWS cognito
 
-   
+https://github.com/user-attachments/assets/faf59d5e-6e5d-4681-a9d7-d36b0b01812a
 
-https://github.com/user-attachments/assets/3b9a6070-0ea8-4636-a451-ee24ea7b5519
+3) Separación del monolito en microservicios independientes
+
+![Captura de pantalla 2025-03-19 123816](https://github.com/user-attachments/assets/07da88bd-ecca-4e9e-b625-eb9964a49434)
+
+Hacemos varios test en la función lambda antes de implementar el API gateway
+
+![Captura de pantalla 2025-03-19 111905](https://github.com/user-attachments/assets/e721d71a-0b2f-48b3-b240-a572a3e9acc0)
+
+![Captura de pantalla 2025-03-19 112119](https://github.com/user-attachments/assets/601dc6a2-2c7c-4a59-9caf-f3b73f44bd0f)
+
+![Captura de pantalla 2025-03-19 224302](https://github.com/user-attachments/assets/fc9b7ea6-1cd5-4ee3-9811-f1a1bb6c5d3a)
+
+
+Creamos los metodos correspondientes a cada recurso (posts, users, streams)
+
+![Captura de pantalla 2025-03-19 235351](https://github.com/user-attachments/assets/0a429558-52f4-4c31-b9b3-6ee71512695d)
+
+
+En el API Rest, creamos un evento de prueba mas 
+
+![Captura de pantalla 2025-03-19 235948](https://github.com/user-attachments/assets/6bae8b6e-a495-4db7-b040-683e7e57638f)
+
+
+Videos de la implementación de la API
+
+https://github.com/user-attachments/assets/80e11149-6212-4ca1-8b77-8c460f923eb3
+
+
+
+https://github.com/user-attachments/assets/e60c66a0-9412-4ed4-b77e-fd1ebbf3672a
+
 
 
 
